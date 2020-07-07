@@ -14,6 +14,8 @@ var _process_file = function (_input, _callback) {
 
     var _lines = _input.trim().split("\n");
     
+    //console.log(_lines)
+    
     var _class_field = $("#class_field").val().trim().split(",");
     _class_field.forEach(removeQuote)
     var _class_field_name = null; 
@@ -71,7 +73,7 @@ var _process_file = function (_input, _callback) {
               _value = _value.slice(1, -1)
             }
 
-            console.log(_value);
+            //console.log(_value);
 
             if (_l === 0) {
                 // 第一行，是屬性
@@ -83,19 +85,23 @@ var _process_file = function (_input, _callback) {
                 if ($.inArray(_value, _class_field) > -1 ) {
                     _class_index = _f;
                     _class_field_name = _value;
+                    
+                    //console.log('有')
                 }
                 //console.log(_value);
             }
             else {
                 //console.log([isNaN(_value), _value]);
-                if (_f !== _class_index && (isNaN(_value) === true && _value !== "?") ) {
+                //console.log("第二行之後", _f, _attr_list, _value, _attr, _class_index, _value !== "?")
+                if (_f !== _class_index 
+                        && _value !== "?" ) {
                     
                     if (_value !== "?") {
                         _value = "'" + _value + "'";
                     }
                     
                     var _attr = _attr_list[_f];
-                    //console.log(_attr);
+                    //console.log("_attr", _attr);
                     if ($.inArray(_attr, _string_fields) > -1) {
                         _attr_type[_attr] = "string";
                     }
@@ -118,6 +124,7 @@ var _process_file = function (_input, _callback) {
                             _norminal_list[_attr].push(_value);
                         }
                         
+                        //console.log("_attr", _attr)
                         if ($.inArray(_attr, _skiplist_fields) > -1) {
                             _skiplist_attr_index = _f;
                             //console.log(_f);
@@ -156,10 +163,11 @@ var _process_file = function (_input, _callback) {
             else {
                 _test_data.push(_line_fields);
                 
-                //console.log(_line_fields[_skiplist_attr_index].toLowerCase());
+                console.log("skip?", _skiplist_attr_index, _line_fields);
                 if (_is_timeseries_forecast_mode === true
                         && _skiplist_attr_index > -1
-                        && (_line_fields[_skiplist_attr_index].toLowerCase().indexOf('false') > -1)) {
+                        && ((_line_fields[_skiplist_attr_index].toLowerCase().indexOf('false') > -1) 
+                        || (_line_fields[_skiplist_attr_index].toLowerCase().indexOf('0') > -1))) {
                     _unknown_count = _unknown_count + 1;
                 }
                 //console.log(_unknown_count);
@@ -211,8 +219,8 @@ var _process_file = function (_input, _callback) {
                     else if (_t === _skiplist_attr_index) {
                         var _label = _line_fields[_t];
                         _label = _label.toLowerCase();
-                        //console.log()
-                        if (_label === "'true'") {
+                        //console.log("_label", _label)
+                        if (_label === "'true'" || _label === "'1'") {
                             if (_ori_date.substr(0,1) === "'") {
                                 _ori_date = _ori_date.substr(1, _ori_date.length-2);
                             }
