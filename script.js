@@ -347,9 +347,9 @@ var _process_file = function (_input, _callback) {
 
     var _build_result = function () {
         var _train_title = _panel.find(".filename").val();
-        _train_title = _train_title.substr(0, _train_title.indexOf("."));
+        _train_title = _train_title.substr(0, _train_title.lastIndexOf("."));
         var _test_title = _panel.find(".test_filename").val();
-        _test_title = _test_title.substr(0, _test_title.indexOf("."));
+        _test_title = _test_title.substr(0, _test_title.lastIndexOf("."));
 
         var _result = "@relation '" + _train_title + "'\n\n";
         var _test_result = "@relation '" + _test_title + "'\n\n";
@@ -603,7 +603,7 @@ var _load_file = function (evt) {
     var _result;
 
     var _original_file_name = evt.target.files[0].name;
-    var _pos = _original_file_name.indexOf(".");
+    var _pos = _original_file_name.lastIndexOf(".");
     var _file_name = "train_set-" + _original_file_name.substr(0, _pos)
             //+ _output_filename_surffix
             //+ _original_file_name.substring(_pos, _original_file_name.length);
