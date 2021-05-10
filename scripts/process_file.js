@@ -81,9 +81,9 @@ var _process_file = function (_input, _callback) {
               _class_index = targetField[0]
               
               _attr_type['target'] = _attr_type[_attr_list[_class_index]]
-              console.log(_class_index, _attr_list)
+              //console.log(_class_index, _attr_list)
               _attr_list[_class_index] = 'target'
-              console.log(_class_index, _attr_list)
+              //console.log(_class_index, _attr_list)
               _class_field_name = 'target'
             }
           }
@@ -195,6 +195,8 @@ var _process_file = function (_input, _callback) {
                     
                 }
                 _value = dataChineseToAD(_value)
+                _value = tryToConvertNumber(_value)
+                
                 _line_fields.push(_value);
                 if (_f === _class_index 
                         && _value !== "?" 
@@ -301,18 +303,21 @@ var _process_file = function (_input, _callback) {
                     }
                     else {
                         var _label = _line_fields[_t];
-                        if (_label.substr(0,1) === "'") {
-                            _label = _label.substr(1, _label.length-2);
-                        }
-                        var _attr_name = _attr_list[_t];
-                        _date = _date + _label;
-                        //console.log(_attr_name);
-                        //console.log(_date);
+                        if (typeof(_label) === 'string') {
 
-                        if (typeof(_timeseries_periodics_custom_fields[_attr_name]) === 'undefined') {
-                            _timeseries_periodics_custom_fields[_attr_name] = [];
+                          if (_label.substr(0,1) === "'") {
+                              _label = _label.substr(1, _label.length-2);
+                          }
+                          var _attr_name = _attr_list[_t];
+                          _date = _date + _label;
+                          //console.log(_attr_name);
+                          //console.log(_date);
+
+                          if (typeof(_timeseries_periodics_custom_fields[_attr_name]) === 'undefined') {
+                              _timeseries_periodics_custom_fields[_attr_name] = [];
+                          }
+                          _timeseries_periodics_custom_fields[_attr_name].push(_date);
                         }
-                        _timeseries_periodics_custom_fields[_attr_name].push(_date);
                     }
                 }
                 

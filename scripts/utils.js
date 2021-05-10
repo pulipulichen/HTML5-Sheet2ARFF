@@ -1,10 +1,4 @@
 function dataChineseToAD (dateString) {
-  if (dateString.startsWith('"') && dateString.endsWith('"')) {
-    dateString = dateString.slice(1, -1)
-  }
-  if (dateString.startsWith("'") && dateString.endsWith("'")) {
-    dateString = dateString.slice(1, -1)
-  }
   
   // 2021年5月7日
   let posYear = dateString.indexOf('年')
@@ -17,10 +11,13 @@ function dataChineseToAD (dateString) {
     return dateString
   }
   
-  
   let partYear = dateString.slice(0, posYear)
   let partMonth = dateString.slice(posYear+1, posMonth)
   let partDay = dateString.slice(posMonth+1, posDay)
+  
+  if (partYear.startsWith(`'`) || partYear.startsWith(`"`)) {
+    partYear = partYear.slice(1)
+  }
   
   partYear = Number(partYear)
   partMonth = Number(partMonth)
@@ -75,4 +72,21 @@ function getIndexFromFields(baseFields, findFields) {
     }
   }
   return -1
+}
+
+function tryToConvertNumber (value) {
+  let originalValue = value
+  if (value.startsWith('"') && value.endsWith('"')) {
+    value = value.slice(1, -1)
+  }
+  if (value.startsWith("'") && value.endsWith("'")) {
+    value = value.slice(1, -1)
+  }
+  
+  if (isNaN(value)) {
+    return originalValue
+  }
+  else {
+    return Number(value)
+  }
 }
