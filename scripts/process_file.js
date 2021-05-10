@@ -195,7 +195,7 @@ var _process_file = function (_input, _callback) {
                     
                 }
                 _value = dataChineseToAD(_value)
-                _value = tryToConvertNumber(_value)
+                //_value = tryToConvertNumber(_value)
                 
                 _line_fields.push(_value);
                 if (_f === _class_index 
